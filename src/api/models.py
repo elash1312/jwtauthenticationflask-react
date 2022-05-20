@@ -17,3 +17,18 @@ class User(db.Model):
             "email": self.email,
             # do not serialize the password, its a security breach
         }
+
+class Account(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    total = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User')
+
+    def __repr__(self):
+        return f"<Account {self.id}>"
+    
+    def serialize(self):
+        return {
+            'id': self.id,
+            'total': self.total
+        }

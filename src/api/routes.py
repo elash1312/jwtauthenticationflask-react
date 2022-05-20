@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, Account
 from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from argon2 import PasswordHasher
+# from argon2 import PasswordHasher
 
 ph = PasswordHasher()
 
@@ -21,20 +21,20 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@api.route('/register', methods=["POST"])
+@api.route('/register', methods=['POST'])
 def register():
     payload = request.get_json()
 
     user = User(
         email=payload['email'], 
-        password=payload['password'], 
+        password=ph.hash(payload['password']), 
         is_active=True
-        )
+    )
 
     db.session.add(user)
     db.session.commit()
 
-    return "user registered", 200 
+    return "user registered", 200
 
 
 @api.route('/login', methods=['POST'])

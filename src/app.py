@@ -43,6 +43,11 @@ setup_commands(app)
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
 
+
+app.config["JWT_SECRET_KEY"] = "this-my-secret"  # Change this "super secret" with something else!
+jwt = JWTManager(app)
+
+
 # Handle/serialize errors like a JSON object
 @app.errorhandler(APIException)
 def handle_invalid_usage(error):
@@ -69,7 +74,3 @@ def serve_any_other_file(path):
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))
     app.run(host='0.0.0.0', port=PORT, debug=True)
-
-
-app.config["JWT_SECRET_KEY"] = "this-is-my-mf-secret"  # Change this "super secret" with something else!
-jwt = JWTManager(app)

@@ -7,7 +7,7 @@ from api.utils import generate_sitemap, APIException
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 # from argon2 import PasswordHasher
 
-ph = PasswordHasher()
+# ph = PasswordHasher()
 
 api = Blueprint('api', __name__)
 
@@ -26,8 +26,9 @@ def register():
     payload = request.get_json()
 
     user = User(
-        email=payload['email'], 
-        password=ph.hash(payload['password']), 
+        email=payload['email'],
+        password = payload['password'],
+        # password=ph.hash(payload['password']), 
         is_active=True
     )
 
